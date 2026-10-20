@@ -6,6 +6,7 @@ import { ArrowRight, CloudSun, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ActivityRail } from "@/components/activities/activity-rail";
 import { Atmosphere, GREETINGS } from "@/components/art/atmosphere";
 import { Composer, SuggestionChips } from "@/components/chat/composer";
 import { Mascot, type MascotState } from "@/components/companion/mascot";
@@ -120,6 +121,11 @@ function HomePageContent() {
       </Page>
 
       <Page className="mt-10 space-y-9">
+        <section>
+          <SectionHeader title="Do something calming" href="/activities" action="All activities" />
+          <ActivityRail />
+        </section>
+
         {(routineNow || !checkedInToday) && (
           <section className="grid gap-3 sm:grid-cols-2">
             {routineNow && (

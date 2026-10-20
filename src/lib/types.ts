@@ -1,6 +1,8 @@
 // Core domain types shared by the client, the API routes and the companion tools.
 
-export type ContentKind = "story" | "meditation" | "breathing" | "soundscape" | "focus";
+export type ContentKind = "story" | "meditation" | "breathing" | "soundscape" | "focus" | "activity";
+
+export type ActivityId = "grounding" | "muscle-release" | "worry-clouds" | "gratitude-jar" | "gentle-stretch" | "calm-bubbles";
 
 export type SceneType =
   | "mountains"
@@ -58,7 +60,9 @@ export interface ContentItem {
   featured?: boolean;
   /** for breathing items */
   breathingPatternId?: BreathingPatternId;
-  /** explicit duration for non-narrated items (focus, breathing, soundscape) */
+  /** for interactive activities */
+  activityId?: ActivityId;
+  /** explicit duration for non-narrated items (focus, breathing, soundscape, activities) */
   fixedMinutes?: number;
   createdAt?: string;
 }

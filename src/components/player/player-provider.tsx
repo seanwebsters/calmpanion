@@ -185,6 +185,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         router.push("/breathe");
         return;
       }
+      if (it.kind === "activity" && it.activityId) {
+        router.push(`/activities/${it.activityId}`);
+        return;
+      }
       if (it.kind === "focus") {
         state.setPendingLaunch({ type: "focus", minutes: it.fixedMinutes ?? 25, presetId: it.ambiencePresetId, autostart: false });
         router.push("/focus");

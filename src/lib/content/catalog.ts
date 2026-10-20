@@ -109,6 +109,106 @@ const FOCUS_ITEMS: ContentItem[] = [
   },
 ];
 
+// Interactive, hands-on activities. Each has its own guided screen under /activities.
+export const ACTIVITY_ITEMS: ContentItem[] = [
+  {
+    id: "activity-grounding",
+    kind: "activity",
+    activityId: "grounding",
+    title: "5-4-3-2-1 Grounding",
+    subtitle: "Come back to right here",
+    description: "Notice five things you can see, four you can feel, three you can hear, two you can smell and one you can taste. Tap as you go.",
+    narrator: "Activity",
+    categoryIds: ["activities"],
+    tags: ["grounding", "senses", "anxious", "present", "quick"],
+    needs: ["stress", "mindfulness"],
+    artwork: { scene: "meadow", palette: ["#24406b", "#5a96a8", "#cdeedc"], sun: true, landmark: "tree" },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 3,
+  },
+  {
+    id: "activity-muscle-release",
+    kind: "activity",
+    activityId: "muscle-release",
+    title: "Tense & Release",
+    subtitle: "Progressive muscle relaxation",
+    description: "Gently tense one area of your body, then let it go. Six areas, guided with a timer, a glowing cue and soft chimes.",
+    narrator: "Activity",
+    categoryIds: ["activities", "relaxation"],
+    tags: ["muscle", "tension", "body", "relax", "sleep"],
+    needs: ["relax", "sleep", "stress"],
+    artwork: { scene: "lake", palette: ["#1d1f5c", "#6a5fb8", "#f3b8a8"], moon: true, stars: true },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 5,
+  },
+  {
+    id: "activity-worry-clouds",
+    kind: "activity",
+    activityId: "worry-clouds",
+    title: "Worry Clouds",
+    subtitle: "Write it down, let it drift",
+    description: "Type what's on your mind. Each worry becomes a little cloud you can watch drift away. Nothing you type is saved.",
+    narrator: "Activity",
+    categoryIds: ["activities", "stress"],
+    tags: ["worry", "overthinking", "letting go", "evening"],
+    needs: ["stress", "sleep"],
+    artwork: { scene: "clouds", palette: ["#2b3a86", "#8a8fd6", "#e6dcff"], sun: true },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 3,
+  },
+  {
+    id: "activity-gratitude-jar",
+    kind: "activity",
+    activityId: "gratitude-jar",
+    title: "Gratitude Jar",
+    subtitle: "Three small good things",
+    description: "Add three good things from today and watch them glow in your jar. Save them to your journal if you like.",
+    narrator: "Activity",
+    categoryIds: ["activities", "gratitude"],
+    tags: ["gratitude", "happiness", "reflection", "evening"],
+    needs: ["happiness", "habits"],
+    artwork: { scene: "night", palette: ["#121a4c", "#5a4a96", "#f0a88f"], moon: true, stars: true, landmark: "lantern" },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 3,
+  },
+  {
+    id: "activity-gentle-stretch",
+    kind: "activity",
+    activityId: "gentle-stretch",
+    title: "Gentle Stretch",
+    subtitle: "Six easy moves, seated or standing",
+    description: "Neck, shoulders, sides, wrists, back and chest. Thirty seconds each, with a timer and a chime between moves.",
+    narrator: "Activity",
+    categoryIds: ["activities", "morning"],
+    tags: ["stretch", "movement", "body", "desk", "morning", "energy"],
+    needs: ["morning", "focus", "habits"],
+    artwork: { scene: "sunrise", palette: ["#3b4a8f", "#e9a6b4", "#ffd2a6"], sun: true },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 4,
+  },
+  {
+    id: "activity-calm-bubbles",
+    kind: "activity",
+    activityId: "calm-bubbles",
+    title: "Calm Bubbles",
+    subtitle: "A slow, mindful mini-game",
+    description: "Bubbles drift up slowly. Pop them gently, one breath at a time. No score to beat, just something soothing to do with your hands.",
+    narrator: "Activity",
+    categoryIds: ["activities"],
+    tags: ["game", "playful", "anxious", "focus", "quick"],
+    needs: ["stress", "relax", "focus"],
+    artwork: { scene: "ocean", palette: ["#0f1c4d", "#2f5ea0", "#9fd3ff"], sun: true },
+    script: [],
+    source: "original-demo",
+    fixedMinutes: 2,
+  },
+];
+
 const SOUNDSCAPE_ITEMS: ContentItem[] = SOUND_PRESETS.map((p) => ({
   id: `sound-${p.id}`,
   kind: "soundscape" as const,
@@ -126,7 +226,7 @@ const SOUNDSCAPE_ITEMS: ContentItem[] = SOUND_PRESETS.map((p) => ({
   fixedMinutes: 30,
 }));
 
-export const CATALOG: ContentItem[] = [...STORIES, ...MEDITATIONS, ...BREATHING_ITEMS, ...FOCUS_ITEMS, ...SOUNDSCAPE_ITEMS];
+export const CATALOG: ContentItem[] = [...STORIES, ...MEDITATIONS, ...BREATHING_ITEMS, ...ACTIVITY_ITEMS, ...FOCUS_ITEMS, ...SOUNDSCAPE_ITEMS];
 
 export const CATEGORIES: ContentCategory[] = [
   { id: "sleep-stories", name: "Sleep Stories", kind: "story", description: "Gentle tales to drift off to", artwork: { scene: "night", palette: ["#0b1033", "#2d3a7c", "#b49be8"], moon: true, stars: true } },
@@ -144,6 +244,7 @@ export const CATEGORIES: ContentCategory[] = [
   { id: "sleep-meditations", name: "Sleep Meditations", kind: "meditation", description: "Guided practices for bedtime", artwork: { scene: "night", palette: ["#0f1440", "#3c3a86", "#b6a0ef"], moon: true, stars: true } },
   { id: "short-resets", name: "Short Resets", kind: "meditation", description: "One to three minutes", artwork: { scene: "clouds", palette: ["#2b3f8a", "#7fa6e0", "#cfe6ff"], sun: true } },
   { id: "mindfulness", name: "Mindfulness", kind: "meditation", description: "Everyday presence", artwork: { scene: "lake", palette: ["#24245e", "#8170c2", "#f4b9a3"] } },
+  { id: "activities", name: "Activities", kind: "activity", description: "Hands-on ways to feel calmer", artwork: { scene: "meadow", palette: ["#24406b", "#5a96a8", "#cdeedc"], sun: true } },
   { id: "breathwork", name: "Breathwork", kind: "breathing", description: "Paced breathing with a guide", artwork: { scene: "clouds", palette: ["#23306e", "#6f8fd6", "#cfe1ff"] } },
   { id: "soundscapes", name: "Soundscapes", kind: "soundscape", description: "Mixable ambient sound", artwork: { scene: "ocean", palette: ["#0f1c4d", "#2f5ea0", "#9fd3ff"] } },
   { id: "focus-sessions", name: "Focus Sessions", kind: "focus", description: "Timers with sound", artwork: { scene: "mountains", palette: ["#162a5c", "#4b79b8", "#b9e0f2"] } },
@@ -185,6 +286,7 @@ export const KIND_LABEL: Record<ContentKind, string> = {
   breathing: "Breathwork",
   soundscape: "Soundscape",
   focus: "Focus",
+  activity: "Activity",
 };
 
 export interface SearchOptions {

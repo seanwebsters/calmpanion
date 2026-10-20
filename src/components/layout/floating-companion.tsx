@@ -12,7 +12,8 @@ export function FloatingCompanion() {
   const pathname = usePathname();
   const name = useApp((s) => s.preferences.companionName);
   const player = usePlayer();
-  const hidden = pathname === "/" || pathname.startsWith("/companion") || pathname.startsWith("/onboarding");
+  // Steps aside on immersive, hands-on screens so it never covers their controls.
+  const hidden = pathname === "/" || ["/companion", "/onboarding", "/activities/", "/breathe", "/focus"].some((p) => pathname.startsWith(p));
   if (hidden) return null;
   const lifted = player.item && !player.expanded;
   return (

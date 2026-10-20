@@ -131,6 +131,11 @@ export async function executeTool(name: string, rawInput: unknown, ctx: Companio
         actions: [{ type: "playSoundscape", layers, presetId: preset?.id, timerMinutes: i.timerMinutes }],
       };
     }
+    case "startActivity": {
+      const i = TOOL_SCHEMAS.startActivity.parse(input);
+      const item = CATALOG.find((c) => c.activityId === i.activityId)!;
+      return { ok: true, summary: `Opened ${item.title}`, result: { started: true, title: item.title, minutes: contentMinutes(item) }, actions: [{ type: "startActivity", activityId: i.activityId }] };
+    }
     case "startFocusSession": {
       const i = TOOL_SCHEMAS.startFocusSession.parse(input);
       return {

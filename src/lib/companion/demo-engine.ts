@@ -16,7 +16,28 @@ export interface DemoPlan {
   offers?: string[];
 }
 
-type Offer = "story" | "breathing" | "meditation" | "sounds" | "focus" | "journal" | "routine";
+type Offer = "story" | "breathing" | "meditation" | "sounds" | "focus" | "journal" | "routine" | "activity";
+
+type ActivityId = "grounding" | "muscle-release" | "worry-clouds" | "gratitude-jar" | "gentle-stretch" | "calm-bubbles";
+
+const ACTIVITY_NAMES: Record<ActivityId, string> = {
+  grounding: "5-4-3-2-1 Grounding",
+  "muscle-release": "Tense & Release",
+  "worry-clouds": "Worry Clouds",
+  "gratitude-jar": "the Gratitude Jar",
+  "gentle-stretch": "a Gentle Stretch",
+  "calm-bubbles": "Calm Bubbles",
+};
+
+function pickActivity(t: string, ctx: CompanionContext): ActivityId {
+  if (/worr|overthink|racing|mind won/.test(t)) return "worry-clouds";
+  if (/grate|thank|good thing|happ/.test(t)) return "gratitude-jar";
+  if (/stretch|stiff|move|desk|body|sore/.test(t)) return "gentle-stretch";
+  if (/bubble|game|play|bored|fidget/.test(t)) return "calm-bubbles";
+  if (/tense|tension|muscle|relax|sleep|bed|switch off/.test(t)) return "muscle-release";
+  if (/ground|panic|anxious|stress|overwhelm/.test(t)) return "grounding";
+  return ctx.timeOfDay === "evening" || ctx.timeOfDay === "night" ? "muscle-release" : ctx.timeOfDay === "morning" ? "gentle-stretch" : "grounding";
+}
 
 const has = (t: string, ...words: (string | RegExp)[]) => words.some((w) => (typeof w === "string" ? t.includes(w) : w.test(t)));
 
@@ -25,6 +46,7 @@ function voice(tone: Tone, gentle: string, playful: string, minimal: string) {
 }
 
 function detectOffer(t: string): Offer | null {
+  if (has(t, "activity", "something to do", "ground", "worry cloud", "gratitude jar", "stretch", "bubble", "tense", "do something", "hands")) return "activity";
   if (has(t, "story", "tale")) return "story";
   if (has(t, "breath", "breathing")) return "breathing";
   if (has(t, "meditat", "body scan")) return "meditation";
@@ -107,15 +129,23 @@ function launchOffer(offer: Offer, ctx: CompanionContext, text: string): DemoPla
       };
     case "routine":
       return planRoutine(ctx);
+    case "activity": {
+      const lastUser = text;
+      const id = pickActivity(lastUser, ctx);
+      return {
+        calls: [{ name: "startActivity", input: { activityId: id } }],
+        reply: voice(tone, `Let's do ${ACTIVITY_NAMES[id]} together. Go at your own pace.`, `Ooh, ${ACTIVITY_NAMES[id]}! I'll be right beside you.`, `Opening ${ACTIVITY_NAMES[id]}.`),
+      };
+    }
   }
 }
 
 function planRoutine(ctx: CompanionContext): DemoPlan {
   const tod = ctx.timeOfDay === "night" ? "evening" : ctx.timeOfDay;
   const templates = {
-    morning: { name: "Five-Minute Morning Reset", ids: ["breathe-gentle", "morning-light"] },
-    afternoon: { name: "Afternoon Focus Break", ids: ["sixty-second-reset", "breathe-box", "focus-25"] },
-    evening: { name: "Evening Wind-Down", ids: ["dusk-wind-down", "breathe-478", "cabin-in-the-rain"] },
+    morning: { name: "Five-Minute Morning Reset", ids: ["activity-gentle-stretch", "breathe-gentle", "morning-light"] },
+    afternoon: { name: "Afternoon Focus Break", ids: ["activity-grounding", "breathe-box", "focus-25"] },
+    evening: { name: "Evening Wind-Down", ids: ["activity-worry-clouds", "breathe-478", "cabin-in-the-rain"] },
   } as const;
   const t = templates[tod];
   return {
@@ -135,10 +165,12 @@ export function planDemoTurn(history: Pick<ChatMessage, "role" | "content" | "of
 
   // Follow-ups to a previous offer ("let's do the story", "yes", "the second one")
   if (prevOffers.length) {
+    // Use the recent conversation, not just "yes", to choose the right activity.
+    const recent = history.filter((m) => m.role === "user").slice(-3).map((m) => m.content.toLowerCase()).join(" ");
     const named = detectOffer(text);
-    if (named && prevOffers.includes(named)) return launchOffer(named, ctx, text);
-    if (SECOND.test(text) && prevOffers[1]) return launchOffer(prevOffers[1], ctx, text);
-    if (AFFIRM.test(text)) return launchOffer(prevOffers[0], ctx, text);
+    if (named && prevOffers.includes(named)) return launchOffer(named, ctx, recent);
+    if (SECOND.test(text) && prevOffers[1]) return launchOffer(prevOffers[1], ctx, recent);
+    if (AFFIRM.test(text)) return launchOffer(prevOffers[0], ctx, recent);
   }
 
   // Memory: "remember that I like rainy stories"
@@ -183,11 +215,11 @@ export function planDemoTurn(history: Pick<ChatMessage, "role" | "content" | "of
       calls: [{ name: "recommendContent", input: { need: "stress", maxMinutes: 10 } }],
       reply: voice(
         tone,
-        "I'm sorry it's feeling heavy. Would a few minutes of slow breathing help, or would you prefer a short guided meditation?",
-        "Oof, that sounds like a lot. Want to breathe it out with me, or try a short meditation?",
-        "Breathing, or a short meditation?",
+        "I'm sorry it's feeling heavy. Would a few minutes of slow breathing help, or would you rather do something with your hands, like a quick grounding activity?",
+        "Oof, that sounds like a lot. Want to breathe it out with me, or try a quick grounding activity?",
+        "Breathing, or a grounding activity?",
       ),
-      offers: ["breathing", "meditation"],
+      offers: ["breathing", "activity"],
     };
   }
 
@@ -258,11 +290,11 @@ export function planDemoTurn(history: Pick<ChatMessage, "role" | "content" | "of
       tone,
       evening
         ? "I'm here. Would you like to wind down with a story, or just breathe for a minute together?"
-        : "I'm here. Would you like to try a short breathing exercise, or put on some calming sounds?",
-      evening ? "I'm all ears (well, all cloud). Story, or some slow breathing?" : "I'm all ears (well, all cloud). Breathing break, or some cosy sounds?",
-      evening ? "Story or breathing?" : "Breathing or sounds?",
+        : "I'm here. Would you like to try a short breathing exercise, or do a quick activity together?",
+      evening ? "I'm all ears (well, all cloud). Story, or some slow breathing?" : "I'm all ears (well, all cloud). Breathing break, or a little activity?",
+      evening ? "Story or breathing?" : "Breathing or an activity?",
     ),
-    offers: evening ? ["story", "breathing"] : ["breathing", "sounds"],
+    offers: evening ? ["story", "breathing"] : ["breathing", "activity"],
   };
 }
 

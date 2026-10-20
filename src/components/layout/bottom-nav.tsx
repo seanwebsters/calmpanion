@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
-  { href: "/explore", label: "Explore", icon: Compass, match: (p: string) => ["/explore", "/sleep", "/meditate", "/breathe", "/sounds", "/focus"].some((x) => p.startsWith(x)) },
+  { href: "/explore", label: "Explore", icon: Compass, match: (p: string) => ["/explore", "/activities", "/sleep", "/meditate", "/breathe", "/sounds", "/focus"].some((x) => p.startsWith(x)) },
   { href: "/companion", label: "Companion", icon: Sparkles, match: (p: string) => p.startsWith("/companion") },
   { href: "/me", label: "My Calm", icon: Sun, match: (p: string) => ["/me", "/routines", "/check-in", "/journal"].some((x) => p.startsWith(x)) },
   { href: "/profile", label: "Profile", icon: UserRound, match: (p: string) => p.startsWith("/profile") || p.startsWith("/auth") || p.startsWith("/support") },

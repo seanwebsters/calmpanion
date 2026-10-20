@@ -37,7 +37,9 @@ ${library}
 SOUNDSCAPE PRESETS
 ${presets}
 
-BREATHING PATTERNS: gentle (5 in, 5 out), box (4-4-4-4), 478 (4 in, 7 hold, 8 out), custom.`;
+BREATHING PATTERNS: gentle (5 in, 5 out), box (4-4-4-4), 478 (4 in, 7 hold, 8 out), custom.
+
+ACTIVITIES (hands-on, launch with startActivity using the part of the id after "activity-"): grounding, muscle-release, worry-clouds, gratitude-jar, gentle-stretch, calm-bubbles. Many people prefer doing something over listening, so when it fits, offer one activity alongside a breathing exercise.`;
 }
 
 /** Per-request context: goes after the cached prefix. */

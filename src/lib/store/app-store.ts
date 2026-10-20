@@ -219,6 +219,8 @@ export const useApp = create<AppState>()(
     {
       name: "calm-companion",
       version: 1,
+      // Rehydrated by <StoreHydrator /> after mount, so the first client render matches the server HTML.
+      skipHydration: true,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => {
         // Don't persist one-shot launch state; drop transcripts if the user opted out.

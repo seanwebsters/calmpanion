@@ -1,6 +1,6 @@
 # Calm Companion
 
-An AI-native reinvention of a meditation and sleep app. Sleep stories, guided meditation, breathing, soundscapes, focus, routines, check-ins and journaling, all reachable through **Nimbus**, a glossy little cloud companion who can talk with you and launch real in-app experiences.
+An AI-native reinvention of a meditation and sleep app, built around things you can *do*: hands-on activities, breathing, soundscapes and focus, plus sleep stories, guided meditation, routines, check-ins and journaling, all reachable through **Nimbus**, a glossy little cloud companion who can talk with you and launch real in-app experiences.
 
 > Calm Companion is a wellbeing app, not a therapist or medical service. The companion always discloses that it is an AI, avoids diagnosis and medical advice, and routes crisis language to real support services.
 
@@ -83,6 +83,21 @@ src/
 4. The client applies actions through real app functions: `player.play()`, the sound mixer, the router (breathing, focus, journal) and the store (routines, memories, generated stories).
 
 Example: *"I can't switch off tonight"* → `recommendContent` (cards shown) → *"Let's do the story"* → `startSleepStory` → the player opens and narrates → on completion you can favourite it or ask Nimbus to remember the preference.
+
+### Activities
+
+Hands-on, guided screens under `/activities` (hub) and `/activities/[id]`:
+
+| Activity | What you do |
+|---|---|
+| 5-4-3-2-1 Grounding | Tap a light (or name it) for each thing you see, feel, hear, smell and taste |
+| Tense & Release | Progressive muscle relaxation across six areas with timed tense/release cues |
+| Worry Clouds | Type worries; each becomes a cloud you tap to let drift away (never stored) |
+| Gratitude Jar | Add three good things that glow in a jar; optionally save to the journal |
+| Gentle Stretch | Six 30-second moves that Nimbus demonstrates, with side-switch cues |
+| Calm Bubbles | A slow, no-score bubble-popping game paced to your breath |
+
+The Breathing Studio also offers **Breathe with Nimbus**, where the companion itself inflates and deflates with each breath. Activities log to history, count towards routines and streaks, appear in search and recommendations, and the companion can launch them with the `startActivity` tool. Chimes and haptics follow the user's sound-cue and haptics settings.
 
 ### Memory vs. history
 

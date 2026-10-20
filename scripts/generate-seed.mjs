@@ -22,7 +22,7 @@ CATEGORIES.forEach((c, i) => {
 lines.push("");
 for (const c of CATALOG) {
   lines.push(
-    `insert into public.content_items (id, kind, title, subtitle, description, narrator, category_ids, tags, needs, artwork, script, ambience_preset_id, source, featured, fixed_minutes) values (${q(c.id)}, ${q(c.kind)}, ${q(c.title)}, ${q(c.subtitle)}, ${q(c.description)}, ${q(c.narrator)}, ${arr(c.categoryIds)}, ${arr(c.tags)}, ${arr(c.needs)}, ${json(c.artwork)}, ${json(c.script)}, ${q(c.ambiencePresetId)}, ${q(c.source)}, ${c.featured ? "true" : "false"}, ${c.fixedMinutes ?? "null"}) on conflict (id) do update set title = excluded.title, subtitle = excluded.subtitle, description = excluded.description, script = excluded.script, artwork = excluded.artwork, tags = excluded.tags;`,
+    `insert into public.content_items (id, kind, title, subtitle, description, narrator, category_ids, tags, needs, artwork, script, ambience_preset_id, source, featured, fixed_minutes, activity_id) values (${q(c.id)}, ${q(c.kind)}, ${q(c.title)}, ${q(c.subtitle)}, ${q(c.description)}, ${q(c.narrator)}, ${arr(c.categoryIds)}, ${arr(c.tags)}, ${arr(c.needs)}, ${json(c.artwork)}, ${json(c.script)}, ${q(c.ambiencePresetId)}, ${q(c.source)}, ${c.featured ? "true" : "false"}, ${c.fixedMinutes ?? "null"}, ${q(c.activityId)}) on conflict (id) do update set title = excluded.title, subtitle = excluded.subtitle, description = excluded.description, script = excluded.script, artwork = excluded.artwork, tags = excluded.tags;`,
   );
 }
 writeFileSync(path.join(root, "supabase/seed.sql"), lines.join("\n") + "\n");

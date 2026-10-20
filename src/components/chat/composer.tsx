@@ -60,7 +60,7 @@ export function Composer({
   );
 }
 
-export const SUGGESTIONS = ["Help me sleep", "I'm feeling stressed", "Tell me a story", "Let's breathe", "Play relaxing sounds", "Help me focus", "Just chat"];
+export const SUGGESTIONS = ["Let's do an activity", "Let's breathe", "I'm feeling stressed", "Help me sleep", "Tell me a story", "Play relaxing sounds", "Help me focus", "Just chat"];
 
 export function SuggestionChips({ onPick, items = SUGGESTIONS, className }: { onPick: (s: string) => void; items?: string[]; className?: string }) {
   return (

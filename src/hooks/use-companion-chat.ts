@@ -49,6 +49,9 @@ export function useCompanionChat() {
                 if (!ok) useUI.getState().showToast("Sound isn't available in this browser.");
               });
             break;
+          case "startActivity":
+            router.push(`/activities/${a.activityId}`);
+            break;
           case "startFocus":
             app.setPendingLaunch({ type: "focus", minutes: a.minutes, presetId: a.presetId, intention: a.intention, autostart: true });
             router.push("/focus");

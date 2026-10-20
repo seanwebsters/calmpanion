@@ -17,10 +17,10 @@ import type { Routine, RoutineStep, TimeOfDay } from "@/lib/types";
 import { cn, dateKey } from "@/lib/utils";
 
 const TEMPLATES: { name: string; description: string; timeOfDay: TimeOfDay; ids: string[] }[] = [
-  { name: "Five-Minute Morning Reset", description: "Breathe, then set an intention", timeOfDay: "morning", ids: ["breathe-gentle", "morning-light"] },
-  { name: "Afternoon Focus Break", description: "Reset, steady, then focus", timeOfDay: "afternoon", ids: ["sixty-second-reset", "breathe-box", "focus-25"] },
-  { name: "Evening Wind-Down", description: "Close the day kindly", timeOfDay: "evening", ids: ["dusk-wind-down", "three-good-things"] },
-  { name: "Bedtime Ritual", description: "Slow breath, then a story", timeOfDay: "night", ids: ["breathe-478", "body-scan-drift", "cabin-in-the-rain"] },
+  { name: "Five-Minute Morning Reset", description: "Stretch, breathe, then set an intention", timeOfDay: "morning", ids: ["activity-gentle-stretch", "breathe-gentle", "morning-light"] },
+  { name: "Afternoon Focus Break", description: "Ground, steady, then focus", timeOfDay: "afternoon", ids: ["activity-grounding", "breathe-box", "focus-25"] },
+  { name: "Evening Wind-Down", description: "Let worries drift, notice the good", timeOfDay: "evening", ids: ["activity-worry-clouds", "activity-gratitude-jar", "dusk-wind-down"] },
+  { name: "Bedtime Ritual", description: "Release tension, slow breath, then a story", timeOfDay: "night", ids: ["activity-muscle-release", "breathe-478", "cabin-in-the-rain"] },
 ];
 
 const DAY = ["S", "M", "T", "W", "T", "F", "S"];

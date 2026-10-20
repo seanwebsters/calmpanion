@@ -34,6 +34,7 @@ export default function BreathePage() {
   const [minutes, setMinutes] = useState(launch?.minutes ?? 3);
   const [status, setStatus] = useState<Status>(launch?.autostart ? "running" : "setup");
   const [elapsed, setElapsed] = useState(0);
+  const [guide, setGuide] = useState<"orb" | "nimbus">("orb");
   const lastTick = useRef<number | null>(null);
   const lastPhase = useRef<number>(-1);
   const sessionId = useRef<string | null>(null);
@@ -121,7 +122,7 @@ export default function BreathePage() {
     <>
       <Atmosphere dim={0.5} />
       <Page>
-        <PageHeader title="Breathe" subtitle="Follow the orb. Go at a pace that feels comfortable." />
+        <PageHeader title="Breathe" subtitle="Follow the orb, or breathe along with Nimbus. Go at a pace that feels comfortable." />
 
         <div className="flex flex-col items-center">
           <div className="relative flex h-[300px] w-[300px] items-center justify-center sm:h-[340px] sm:w-[340px]">
@@ -133,13 +134,28 @@ export default function BreathePage() {
                 transition={{ duration: active ? now.phase.seconds : 1.5, ease: "easeInOut" }}
               />
             ))}
+            {guide === "nimbus" ? (
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ scale: status === "running" ? SCALE[now.phase.name] : status === "paused" ? undefined : 0.75 }}
+                transition={{ duration: status === "running" ? now.remaining : 1.5, ease: "easeInOut" }}
+              >
+                <Mascot
+                  size={290}
+                  still
+                  state={status === "done" ? "happy" : !active ? "idle" : now.phase.name === "exhale" || now.phase.name === "holdAfter" ? "sleeping" : "listening"}
+                  label="Nimbus breathing with you"
+                />
+              </motion.div>
+            ) : (
             <motion.div
               className="absolute inset-[6%] rounded-full"
               style={{ background: "radial-gradient(circle at 35% 30%, #ffffff 0%, #e6dcff 25%, #b4a0f4 55%, #7fbfff 85%, rgba(127,191,255,0.2) 100%)", boxShadow: "0 0 80px rgba(180,160,244,0.55)" }}
               animate={{ scale: status === "running" ? SCALE[now.phase.name] : status === "paused" ? undefined : 0.75 }}
               transition={{ duration: status === "running" ? now.remaining : 1.5, ease: "easeInOut" }}
             />
-            <div className="relative text-center text-night-900">
+            )}
+            <div className={guide === "nimbus" ? "hidden" : "relative text-center text-night-900"}>
               <AnimatePresence mode="wait">
                 {status === "done" ? (
                   <motion.div key="done" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -159,6 +175,20 @@ export default function BreathePage() {
             </div>
           </div>
 
+          {guide === "nimbus" && active && (
+            <div className="text-center" aria-live="polite">
+              <p className="font-display text-3xl">{status === "paused" ? "Paused" : now.phase.label}</p>
+              <p className="text-3xl font-bold tabular-nums">{Math.ceil(now.remaining)}</p>
+            </div>
+          )}
+          <div className="mt-3 flex gap-2" role="group" aria-label="Breathing guide">
+            <Chip active={guide === "orb"} onClick={() => setGuide("orb")}>
+              Glowing orb
+            </Chip>
+            <Chip active={guide === "nimbus"} onClick={() => setGuide("nimbus")}>
+              Breathe with Nimbus
+            </Chip>
+          </div>
           {active && (
             <p className="mt-2 text-sm text-white/70">
               Breath {Math.min(cycles, now.cycles + 1)} of {cycles}

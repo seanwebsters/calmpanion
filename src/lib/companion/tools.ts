@@ -4,7 +4,8 @@ import type { ContentItem, SoundLayerSetting, StoryRequest } from "@/lib/types";
 // Single source of truth for the companion's tools: Zod schemas validate inputs at runtime
 // and are converted to JSON Schema for the Anthropic API.
 
-const kindEnum = z.enum(["story", "meditation", "breathing", "soundscape", "focus"]);
+const kindEnum = z.enum(["story", "meditation", "breathing", "soundscape", "focus", "activity"]);
+export const ACTIVITY_IDS = ["grounding", "muscle-release", "worry-clouds", "gratitude-jar", "gentle-stretch", "calm-bubbles"] as const;
 const needEnum = z.enum(["sleep", "stress", "relax", "focus", "habits", "happiness", "mindfulness", "morning"]);
 const soundIdEnum = z.enum(["rain", "ocean", "forest", "wind", "piano", "white-noise", "brown-noise", "crickets", "stream"]);
 const timeOfDayEnum = z.enum(["morning", "afternoon", "evening", "night"]);
@@ -45,6 +46,9 @@ export const TOOL_SCHEMAS = {
       .optional()
       .describe("Or a custom mix of layers"),
     timerMinutes: z.number().int().min(5).max(240).optional().describe("Fade out after this many minutes"),
+  }),
+  startActivity: z.object({
+    activityId: z.enum(ACTIVITY_IDS).describe("grounding = 5-4-3-2-1 senses; muscle-release = tense & release; worry-clouds = write worries and let them drift; gratitude-jar = three good things; gentle-stretch = six easy stretches; calm-bubbles = slow bubble-popping mini-game"),
   }),
   startFocusSession: z.object({
     minutes: z.number().int().min(5).max(120),
@@ -90,6 +94,7 @@ export const TOOL_DESCRIPTIONS: Record<ToolName, string> = {
   startMeditation: "Start playing a guided meditation in the app's player. Only use after the user has agreed.",
   startBreathing: "Open the Breathing Studio and begin a paced breathing exercise. Only use after the user has agreed.",
   playSoundscape: "Start the ambient soundscape mixer with a preset or a custom mix of layers.",
+  startActivity: "Open an interactive, hands-on activity (grounding, tense & release, worry clouds, gratitude jar, gentle stretch, calm bubbles). Great when the user wants to DO something. Only use after the user agrees.",
   startFocusSession: "Open the Focus timer with an optional soundscape and intention.",
   createRoutine: "Create a reusable wellbeing routine made of 1-5 content steps. Confirm the plan with the user first.",
   savePreference: "Save a NON-SENSITIVE preference to long-term memory (only works if the user enabled memory). Never save health, mental-health, relationship, location or other sensitive details.",
@@ -123,6 +128,7 @@ export type ClientAction =
   | { type: "play"; contentId: string }
   | { type: "startBreathing"; pattern: "gentle" | "box" | "478" | "custom"; minutes: number; custom?: { inhale: number; hold: number; exhale: number; holdAfter: number } }
   | { type: "playSoundscape"; layers: SoundLayerSetting[]; presetId?: string; timerMinutes?: number }
+  | { type: "startActivity"; activityId: (typeof ACTIVITY_IDS)[number] }
   | { type: "startFocus"; minutes: number; presetId?: string; intention?: string }
   | { type: "createRoutine"; routine: { name: string; description: string; timeOfDay: "morning" | "afternoon" | "evening" | "night"; days: number[]; contentIds: string[] } }
   | { type: "saveMemory"; category: string; text: string }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain, Moon, Search, Sparkles, Waves, Wind, X } from "lucide-react";
+import { Brain, Hand, Moon, Search, Sparkles, Waves, Wind, X } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Atmosphere } from "@/components/art/atmosphere";
@@ -15,12 +15,14 @@ import { resolveContent, useApp } from "@/lib/store/app-store";
 import type { ContentKind } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+const art = (id: string) => CATEGORIES.find((c) => c.id === id)!.artwork;
 const TILES = [
-  { href: "/sleep", label: "Sleep Stories", icon: Moon, art: CATEGORIES[0].artwork },
-  { href: "/meditate", label: "Meditate", icon: Sparkles, art: CATEGORIES[5].artwork },
-  { href: "/breathe", label: "Breathe", icon: Wind, art: CATEGORIES[15].artwork },
-  { href: "/sounds", label: "Soundscapes", icon: Waves, art: CATEGORIES[16].artwork },
-  { href: "/focus", label: "Focus", icon: Brain, art: CATEGORIES[17].artwork },
+  { href: "/activities", label: "Activities", icon: Hand, art: art("activities") },
+  { href: "/breathe", label: "Breathe", icon: Wind, art: art("breathwork") },
+  { href: "/sleep", label: "Sleep Stories", icon: Moon, art: art("sleep-stories") },
+  { href: "/meditate", label: "Meditate", icon: Sparkles, art: art("morning") },
+  { href: "/sounds", label: "Soundscapes", icon: Waves, art: art("soundscapes") },
+  { href: "/focus", label: "Focus", icon: Brain, art: art("focus-sessions") },
 ];
 
 const DURATIONS = [
@@ -72,7 +74,7 @@ export default function ExplorePage() {
         </div>
 
         <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:-mx-6 sm:px-6">
-          {(["all", "story", "meditation", "breathing", "soundscape", "focus"] as const).map((k) => (
+          {(["all", "activity", "breathing", "story", "meditation", "soundscape", "focus"] as const).map((k) => (
             <Chip key={k} active={kind === k} onClick={() => setKind(k)}>
               {k === "all" ? "All" : KIND_LABEL[k]}
             </Chip>
@@ -117,9 +119,9 @@ export default function ExplorePage() {
           </section>
         ) : (
           <div className="mt-6 space-y-9">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {TILES.map(({ href, label, icon: Icon, art }) => (
-                <Link key={href} href={href} className="group relative h-24 overflow-hidden rounded-[22px] last:col-span-2 sm:h-28 sm:last:col-span-1">
+                <Link key={href} href={href} className="group relative h-24 overflow-hidden rounded-[22px] sm:h-28">
                   <Landscape spec={art} seed={href} />
                   <div className="absolute inset-0 bg-night-950/35 transition group-hover:bg-night-950/20" />
                   <div className="absolute bottom-3 left-3 flex items-center gap-2 font-semibold">
