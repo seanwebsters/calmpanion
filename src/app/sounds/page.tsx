@@ -32,7 +32,7 @@ export default function SoundsPage() {
     SOUNDS.filter((s) => s.type === "file").forEach((s) => engine.fileAvailable(s.id).then((ok) => setFileOk((f) => ({ ...f, [s.id]: ok }))));
   }, [engine]);
 
-  const now = useNow(15_000, Boolean(mixer.timerEndsAt));
+  const now = useNow();
 
   const loadPreset = (layers: SoundLayerSetting[], presetId?: string) => {
     void engine.setMix(layers);
@@ -79,7 +79,7 @@ export default function SoundsPage() {
 
         <section className="mt-8">
           <SectionHeader title="Mixer" />
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {SOUNDS.map((s) => {
               const vol = mixer.playing[s.id];
               const on = vol !== undefined;
@@ -115,7 +115,7 @@ export default function SoundsPage() {
           </div>
         </section>
 
-        <section className="mt-8 grid gap-3 sm:grid-cols-2">
+        <section className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Card>
             <p className="mb-3 flex items-center gap-2 font-semibold">
               <Moon className="h-4 w-4" /> Sleep timer {minutesLeft && <span className="text-sm font-normal text-white/60">· fades out in {minutesLeft} min</span>}

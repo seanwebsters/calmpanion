@@ -25,6 +25,15 @@ export default function MyCalmPage() {
   const completions = useApp((s) => s.completions);
   const checkIns = useApp((s) => s.checkIns);
 
+  if (!hydrated) {
+    return (
+      <Page>
+        <PageHeader title="My Calm" />
+        <div className="skeleton h-40 rounded-[28px]" />
+      </Page>
+    );
+  }
+
   const weekStart = new Date();
   weekStart.setDate(weekStart.getDate() - 6);
   weekStart.setHours(0, 0, 0, 0);
@@ -40,15 +49,6 @@ export default function MyCalmPage() {
   const favItems = favourites.map((id) => resolveContent(id, generated)).filter((x) => x !== undefined);
   const todaysRoutines = routines.filter((r) => r.active && r.days.includes(new Date().getDay()));
   const doneRoutines = todaysRoutines.filter((r) => routineDoneToday(completions, r.id) === "done").length;
-
-  if (!hydrated) {
-    return (
-      <Page>
-        <PageHeader title="My Calm" />
-        <div className="skeleton h-40 rounded-[28px]" />
-      </Page>
-    );
-  }
 
   return (
     <>

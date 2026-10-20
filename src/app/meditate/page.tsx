@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientOnly, PageSkeleton } from "@/components/layout/client-only";
 import { CheckCircle2 } from "lucide-react";
 import { useMemo } from "react";
 import { Atmosphere } from "@/components/art/atmosphere";
@@ -22,7 +23,7 @@ const GROUPS = [
   { id: "short-resets", title: "Short resets" },
 ];
 
-export default function MeditatePage() {
+function MeditatePageContent() {
   const hydrated = useHydrated();
   const sessions = useApp((s) => s.sessions);
   const prefs = useApp((s) => s.preferences);
@@ -88,5 +89,14 @@ export default function MeditatePage() {
         })}
       </Page>
     </>
+  );
+}
+
+// Depends on the local store and the current date, so it renders in the browser only.
+export default function MeditatePage() {
+  return (
+    <ClientOnly fallback={<PageSkeleton />}>
+      <MeditatePageContent />
+    </ClientOnly>
   );
 }

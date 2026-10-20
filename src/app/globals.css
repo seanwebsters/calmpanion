@@ -69,9 +69,12 @@
   color-scheme: dark;
 }
 
-html,
-body {
+/* Only the root carries the background so fixed atmosphere layers (z-index: -10) stay visible. */
+html {
   background: var(--color-night-950);
+}
+
+body {
   color: #f5f3ff;
   -webkit-tap-highlight-color: transparent;
 }

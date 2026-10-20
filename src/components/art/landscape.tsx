@@ -138,7 +138,7 @@ export function Landscape({ spec, seed = "x", animated = false, className, detai
 
       <Terrain spec={spec} rand={rand} uid={uid} far={far} midLand={midLand} near={near} horizonY={horizonY} animated={animated} detail={detail} />
 
-      <rect y={horizonY - 30} width={W} height="60" fill={`url(#${uid}-mist)`} opacity="0.7" className={animated ? "animate-twinkle" : undefined} style={animated ? { animationDuration: "14s" } : undefined} />
+      <rect y={horizonY - 30} width={W} height="60" fill={`url(#${uid}-mist)`} fillOpacity="0.7" className={animated ? "animate-twinkle" : undefined} style={animated ? { animationDuration: "14s" } : undefined} />
     </svg>
   );
 }
@@ -273,9 +273,8 @@ function Terrain({ spec, rand, uid, far, midLand, near, horizonY, animated, deta
 function Lighthouse({ x, y, uid, animated }: { x: number; y: number; uid: string; animated: boolean }) {
   return (
     <g>
-      <g className={animated ? "origin-[300px_120px]" : undefined}>
-        <path d={`M${x} ${y - 66} L${x - 140} ${y - 90} L${x - 140} ${y - 50} Z`} fill="#fff4d6" opacity="0.1" className={animated ? "animate-twinkle" : undefined} style={{ animationDuration: "6s" }} />
-      </g>
+      {/* fillOpacity keeps the beam faint even while the twinkle animation drives opacity */}
+      <path d={`M${x} ${y - 66} L${x - 140} ${y - 90} L${x - 140} ${y - 50} Z`} fill="#fff4d6" fillOpacity="0.1" className={animated ? "animate-twinkle" : undefined} style={animated ? { animationDuration: "6s" } : undefined} />
       <path d={`M${x - 7} ${y} L${x - 4} ${y - 60} L${x + 4} ${y - 60} L${x + 7} ${y} Z`} fill="#e9e4f7" />
       <rect x={x - 6} y={y - 40} width="12" height="5" fill="#d47a74" />
       <rect x={x - 5} y={y - 22} width="10" height="5" fill="#d47a74" />

@@ -8,12 +8,14 @@ import { ChatThread } from "@/components/chat/chat-thread";
 import { Composer, SuggestionChips } from "@/components/chat/composer";
 import { Mascot } from "@/components/companion/mascot";
 import { Page } from "@/components/layout/app-shell";
+import { usePlayer } from "@/components/player/player-provider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/misc";
 import { useCapabilities } from "@/hooks/use-capabilities";
 import { useCompanionChat } from "@/hooks/use-companion-chat";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useApp } from "@/lib/store/app-store";
+import { cn } from "@/lib/utils";
 
 export default function CompanionPage() {
   const hydrated = useHydrated();
@@ -22,6 +24,8 @@ export default function CompanionPage() {
   const name = useApp((s) => s.preferences.companionName);
   const saveConversations = useApp((s) => s.preferences.saveConversations);
   const clearMessages = useApp((s) => s.clearMessages);
+  const player = usePlayer();
+  const miniPlayerVisible = Boolean(player.item && !player.expanded);
   const consumed = useRef(false);
 
   // A prompt handed over from Home (chips or input) is sent once on arrival.
@@ -42,7 +46,7 @@ export default function CompanionPage() {
       <Atmosphere dim={0.35} />
       <Page className="flex min-h-[calc(100dvh-9rem)] flex-col">
         <header className="sticky top-0 z-20 -mx-4 flex items-center gap-3 px-4 pb-3 pt-[max(env(safe-area-inset-top),16px)] sm:-mx-6 sm:px-6">
-          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-night-950/90 to-transparent" />
+          <div className="absolute inset-0 -z-10 border-b border-white/5 bg-night-950/80 backdrop-blur-xl" />
           <Mascot size={52} state={sending ? "thinking" : "idle"} still />
           <div className="min-w-0 flex-1">
             <h1 className="font-display text-2xl leading-none">{name}</h1>
@@ -63,7 +67,7 @@ export default function CompanionPage() {
           )}
         </header>
 
-        <div className="flex-1 pb-4 pt-2">
+        <div className="flex-1 pb-8 pt-4">
           {empty ? (
             <div className="flex flex-col items-center pt-10 text-center">
               <Mascot size={170} state="waving" label={name} />
@@ -84,7 +88,7 @@ export default function CompanionPage() {
           )}
         </div>
 
-        <div className="sticky bottom-[96px] z-20 space-y-2 sm:bottom-6">
+        <div className={cn("sticky z-20 space-y-2 pb-2", miniPlayerVisible ? "bottom-[168px] sm:bottom-24" : "bottom-[96px] sm:bottom-6")}>
           {empty && <SuggestionChips onPick={send} />}
           <Composer onSend={send} disabled={sending} autoFocus={false} />
         </div>

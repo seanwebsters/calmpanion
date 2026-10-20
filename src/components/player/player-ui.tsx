@@ -76,7 +76,7 @@ export function FullPlayer() {
   const item = p.item;
   const isFav = item ? favourites.includes(item.id) : false;
   const playing = p.status === "playing" || p.status === "loading";
-  const now = useNow(15_000, Boolean(p.sleepTimerEndsAt));
+  const now = useNow();
 
   return (
     <AnimatePresence>

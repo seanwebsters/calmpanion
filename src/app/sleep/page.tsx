@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientOnly, PageSkeleton } from "@/components/layout/client-only";
 import { Search, Sparkles, Trash2, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -17,7 +18,7 @@ import { cn, getTimeOfDay } from "@/lib/utils";
 
 const STORY_CATS = CATEGORIES.filter((c) => c.kind === "story" || c.id === "nature");
 
-export default function SleepPage() {
+function SleepPageContent() {
   const hydrated = useHydrated();
   const player = usePlayer();
   const prefs = useApp((s) => s.preferences);
@@ -152,5 +153,14 @@ export default function SleepPage() {
         </div>
       </Page>
     </>
+  );
+}
+
+// Depends on the local store and the current date, so it renders in the browser only.
+export default function SleepPage() {
+  return (
+    <ClientOnly fallback={<PageSkeleton />}>
+      <SleepPageContent />
+    </ClientOnly>
   );
 }

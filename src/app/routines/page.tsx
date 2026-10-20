@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientOnly, PageSkeleton } from "@/components/layout/client-only";
 import { Check, Pause, Play, Plus, SkipForward, Trash2, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { Atmosphere } from "@/components/art/atmosphere";
@@ -32,7 +33,7 @@ function toSteps(ids: string[]): RoutineStep[] {
     .map((c) => ({ contentId: c.id, title: c.title, kind: c.kind, minutes: contentMinutes(c) }));
 }
 
-export default function RoutinesPage() {
+function RoutinesPageContent() {
   const hydrated = useHydrated();
   const player = usePlayer();
   const routines = useApp((s) => s.routines);
@@ -246,5 +247,14 @@ function CreateRoutineSheet({ open, onOpenChange, onCreate }: { open: boolean; o
         </Button>
       </div>
     </Sheet>
+  );
+}
+
+// Depends on the local store and the current date, so it renders in the browser only.
+export default function RoutinesPage() {
+  return (
+    <ClientOnly fallback={<PageSkeleton />}>
+      <RoutinesPageContent />
+    </ClientOnly>
   );
 }

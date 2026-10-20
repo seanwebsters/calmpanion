@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientOnly, PageSkeleton } from "@/components/layout/client-only";
 import { motion } from "framer-motion";
 import { ArrowRight, CloudSun, NotebookPen } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +22,7 @@ import { dateKey } from "@/lib/utils";
 
 const RAIL_TITLE = { morning: "For your morning", afternoon: "For a midday pause", evening: "For this evening", night: "For tonight" } as const;
 
-export default function HomePage() {
+function HomePageContent() {
   const router = useRouter();
   const hydrated = useHydrated();
   const tod = useTimeOfDay();
@@ -172,5 +173,14 @@ export default function HomePage() {
         )}
       </Page>
     </>
+  );
+}
+
+// Depends on the local store and the current date, so it renders in the browser only.
+export default function HomePage() {
+  return (
+    <ClientOnly fallback={<PageSkeleton />}>
+      <HomePageContent />
+    </ClientOnly>
   );
 }

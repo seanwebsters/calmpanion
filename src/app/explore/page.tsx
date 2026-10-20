@@ -119,7 +119,7 @@ export default function ExplorePage() {
           <div className="mt-6 space-y-9">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
               {TILES.map(({ href, label, icon: Icon, art }) => (
-                <Link key={href} href={href} className="group relative h-24 overflow-hidden rounded-[22px] sm:h-28">
+                <Link key={href} href={href} className="group relative h-24 overflow-hidden rounded-[22px] last:col-span-2 sm:h-28 sm:last:col-span-1">
                   <Landscape spec={art} seed={href} />
                   <div className="absolute inset-0 bg-night-950/35 transition group-hover:bg-night-950/20" />
                   <div className="absolute bottom-3 left-3 flex items-center gap-2 font-semibold">

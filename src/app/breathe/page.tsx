@@ -151,7 +151,7 @@ export default function BreathePage() {
                     <p className="text-4xl font-bold tabular-nums">{Math.ceil(now.remaining)}</p>
                   </motion.div>
                 ) : (
-                  <motion.p key="ready" className="font-display text-2xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <motion.p key="ready" className="mx-auto max-w-[170px] font-display text-xl leading-snug" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     Ready when you are
                   </motion.p>
                 )}

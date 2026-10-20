@@ -1,14 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-/** Current time, refreshed on an interval while enabled (keeps renders pure). */
-export function useNow(intervalMs = 15_000, enabled = true) {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (!enabled) return;
-    const id = setInterval(() => setNow(Date.now()), intervalMs);
-    return () => clearInterval(id);
-  }, [intervalMs, enabled]);
-  return now;
+// A shared clock that ticks every 15s while anything is subscribed. Renders stay pure and
+// prerendering sees a stable value (0) instead of an unstable Date.now().
+let current = 0;
+const listeners = new Set<() => void>();
+let timer: ReturnType<typeof setInterval> | null = null;
+
+function subscribe(cb: () => void) {
+  listeners.add(cb);
+  current = Date.now();
+  queueMicrotask(cb);
+  timer ??= setInterval(() => {
+    current = Date.now();
+    listeners.forEach((l) => l());
+  }, 15_000);
+  return () => {
+    listeners.delete(cb);
+    if (!listeners.size && timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+}
+
+export function useNow() {
+  return useSyncExternalStore(subscribe, () => current, () => 0);
 }

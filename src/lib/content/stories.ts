@@ -12,7 +12,7 @@ export const STORIES: ContentItem[] = [
       "Follow Ada, the harbour's lantern keeper, on her unhurried evening round as fishing boats settle, gulls quiet down and the lights come on one by one across the water.",
     narrator: "Nimbus",
     categoryIds: ["sleep-stories", "coastal"],
-    tags: ["sea", "harbour", "lanterns", "cosy", "evening"],
+    tags: ["sea", "harbour", "lighthouse", "lanterns", "cosy", "evening"],
     needs: ["sleep", "relax"],
     artwork: { scene: "ocean", palette: ["#0d1440", "#2c3f86", "#f2a98a"], landmark: "lighthouse", moon: true, stars: true },
     ambiencePresetId: "harbour-night",

@@ -213,12 +213,14 @@ export function searchContent(opts: SearchOptions, pool: ContentItem[] = CATALOG
       if (terms.length === 0) return { c, score: c.featured ? 2 : 1 };
       const title = normalise(c.title);
       const hay = normalise([c.subtitle, c.description, c.tags.join(" "), c.needs.join(" "), c.categoryIds.join(" ")].join(" "));
+      const script = normalise(c.script.map((x) => x.text).join(" "));
       let score = 0;
       for (const t of terms) {
         const stem = t.replace(/(ing|s)$/, "");
         if (title.includes(stem)) score += 5;
         if (c.tags.some((tag) => tag.includes(stem))) score += 3;
         if (hay.includes(stem)) score += 1;
+        else if (script.includes(stem)) score += 0.5;
       }
       return { c, score };
     })

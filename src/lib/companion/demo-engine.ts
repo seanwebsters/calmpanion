@@ -233,6 +233,17 @@ export function planDemoTurn(history: Pick<ChatMessage, "role" | "content" | "of
   if (has(text, "are you human", "are you real", "are you an ai", "who are you", "what are you")) {
     return { calls: [], reply: `I'm ${name}, an AI companion in this app. I'm not a person or a therapist, but I can help you find stories, meditations, breathing and sounds, and keep you company while you use them.` };
   }
+  if (has(text, "just chat", "talk to me", "keep me company", "how are you")) {
+    return {
+      calls: [],
+      reply: voice(
+        tone,
+        "I'd like that. How has your day been, honestly? Big things, small things, anything at all.",
+        "Yay, chat time! I've been floating around all day. How's your day been?",
+        "Sure. How's your day been?",
+      ),
+    };
+  }
   if (has(text, /^(hi|hey|hello|good (morning|afternoon|evening))/)) {
     const greet = ctx.timeOfDay === "morning" ? "Good morning" : ctx.timeOfDay === "afternoon" ? "Good afternoon" : "Good evening";
     return {
