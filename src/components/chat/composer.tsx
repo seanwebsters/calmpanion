@@ -64,7 +64,7 @@ export const SUGGESTIONS = ["Help me sleep", "I'm feeling stressed", "Tell me a 
 
 export function SuggestionChips({ onPick, items = SUGGESTIONS, className }: { onPick: (s: string) => void; items?: string[]; className?: string }) {
   return (
-    <div className={cn("-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none", className)}>
+    <div className={cn("-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0", className)}>
       {items.map((s) => (
         <button
           key={s}
